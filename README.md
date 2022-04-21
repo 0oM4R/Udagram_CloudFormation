@@ -28,5 +28,5 @@ One of the output exports of the CloudFormation script should be the public URL 
 
 ## Solution 
 
-Note : I added JumpBox to allow developers to access private subnets usning SSH
-![This is a preview](/Udacity project.png "lucid")
+Note : I added JumpBox to allow developers to access private subnets usning SSH, one in each AZ to avoid single point failure
+![This is a preview](https://github.com/0oM4R/Udagram_CloudFormation/blob/main/Udacity%20project.png)
