@@ -1,0 +1,76 @@
+Parameters:
+  EnvironmentName:
+    Description: An environment name that will be prefixed before the variables
+    Type: String
+
+Resources:
+  jumpBoxSecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to our hosts from local
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${EnvironmentName}-VPCID"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  jumpBox1:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-03ededff12e34e59e
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sdk"
+          Ebs:
+            VolumeSize: '10'
+      # should be a key here but i will remove it as asked
+      # VpcId: 
+      #     Fn::ImportValue:
+      #       Fn::Sub: "${EnvironmentName}-VPCID"
+      # SubnetId : 
+      #   Fn::ImportValue: !Sub "${EnvironmentName}-PUB1-SN"
+      # SecurityGroups:
+      # - Ref: jumpBoxSecGroup
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      NetworkInterfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: true
+          DeleteOnTermination: true
+          SubnetId: 
+            Fn::ImportValue: 
+              !Sub "${EnvironmentName}-PUB1-SN"
+          GroupSet: 
+            - Ref: jumpBoxSecGroup
+  jumpBox2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-03ededff12e34e59e
+      BlockDeviceMappings:
+        - DeviceName: "/dev/sdk"
+          Ebs:
+            VolumeSize: '10'
+      # should be a key here but i will remove it as asked
+      # VpcId: 
+      #     Fn::ImportValue:
+      #       Fn::Sub: "${EnvironmentName}-VPCID"
+      # SubnetId : 
+      #   Fn::ImportValue: !Sub "${EnvironmentName}-PUB2-SN"
+      # SecurityGroups:
+      # - Ref: jumpBoxSecGroup
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      NetworkInterfaces:
+        - DeviceIndex: 0
+          AssociatePublicIpAddress: true
+          DeleteOnTermination: true
+          SubnetId: 
+            Fn::ImportValue: 
+              !Sub "${EnvironmentName}-PUB2-SN"
+          GroupSet: 
+            - Ref: jumpBoxSecGroup
