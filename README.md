@@ -1,7 +1,7 @@
 # Udagram_CloudFormation
 Deploy a high-availability web app using CloudFormation
 
-### Scenario
+## Problem scenario
 A company is creating an Instagram clone called Udagram.
 
 Developers want to deploy a new application to the AWS infrastructure.
@@ -29,3 +29,4 @@ One of the output exports of the CloudFormation script should be the public URL 
 ## Solution 
 
 Note : I added JumpBox to allow developers to access private subnets usning SSH
+![This is a preview](/Udacity project.png "lucid")
